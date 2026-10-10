@@ -1,3 +1,5 @@
+"""JWT authentication, user manager, and the current-user dependency."""
+
 import uuid
 from typing import Optional
 from fastapi import Depends, Request
@@ -10,9 +12,14 @@ from fastapi_users.authentication import (
 from fastapi_users.db import SQLAlchemyUserDatabase
 from src.db import User, get_user_db
 
+# Signing key for JWT, password-reset, and email-verification tokens.
+# Replace with an environment variable before deploying.
 SECRET = "saberRiN4c94wguabducks1846s"
 
+
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
+    """User lifecycle hooks used by fastapi-users routers."""
+
     reset_password_token_secret = SECRET
     verification_token_secret = SECRET
 
@@ -25,13 +32,19 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     async def on_after_request_verify(self, user: User, token: str, request: Optional[Request] = None):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
 
+
 async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db)):
+    """Provide a UserManager for each request."""
     yield UserManager(user_db)
+
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
+
 def get_jwt_strategy() -> JWTStrategy[models.UP, models.ID]:
+    """Access tokens expire after one hour."""
     return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
+
 
 auth_backend = AuthenticationBackend(
     name='jwt',

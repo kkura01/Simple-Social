@@ -1,3 +1,5 @@
+"""ImageKit client used to host uploaded images and videos."""
+
 from dotenv import load_dotenv
 from imagekitio import ImageKit
 import os

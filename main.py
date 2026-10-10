@@ -1,3 +1,5 @@
+"""Run the FastAPI app with auto-reload on http://0.0.0.0:8000."""
+
 import uvicorn
 
 if __name__ == "__main__":

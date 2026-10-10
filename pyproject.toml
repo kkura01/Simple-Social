@@ -1,6 +1,7 @@
 [project]
 name = "fast-api-tutorial"
 version = "0.1.0"
+description = "Simple Social: FastAPI + Streamlit feed with JWT auth and ImageKit uploads."
 requires-python = ">=3.14"
 dependencies = [
     "aiosqlite>=0.22.1",

@@ -1,3 +1,5 @@
+"""Streamlit UI for Simple Social: login, feed, and media upload."""
+
 import streamlit as st
 import requests
 import base64
@@ -20,6 +22,7 @@ def get_headers():
 
 
 def login_page():
+    """Email/password login and registration against the FastAPI auth routes."""
     st.title("🚀 Welcome to Simple Social")
 
     # Simple form with two buttons
@@ -65,6 +68,7 @@ def login_page():
 
 
 def upload_page():
+    """Upload an image or video with an optional caption."""
     st.title("📸 Share Something")
 
     uploaded_file = st.file_uploader("Choose media", type=['png', 'jpg', 'jpeg', 'mp4', 'avi', 'mov', 'mkv', 'webm'])
@@ -94,6 +98,7 @@ def encode_text_for_overlay(text):
 
 
 def create_transformed_url(original_url, transformation_params, caption=None):
+    """Build an ImageKit transformation URL, optionally overlaying the caption."""
     if caption:
         encoded_caption = encode_text_for_overlay(caption)
         # Add text overlay at bottom with semi-transparent background
@@ -112,6 +117,7 @@ def create_transformed_url(original_url, transformation_params, caption=None):
 
 
 def feed_page():
+    """Show newest posts and let owners delete their own."""
     st.title("🏠 Feed")
 
     response = requests.get("http://localhost:8000/feed", headers=get_headers())
